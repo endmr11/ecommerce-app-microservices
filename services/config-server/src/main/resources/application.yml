@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config-server
+    # Uygulamanin adini belirler. Bu, Spring uygulamanizin kimligini belirtir ve diger servisler bu adi kullanarak bu servise erisebilirler.
+
+  profiles:
+    active: native
+    # Aktif profil olarak "native" seçilmis. Bu, uygulamanizin hangi profil yapilandirmasini kullanacagini belirtir.
+    # "native" profili, uygulamanizin yapilandirmalarini yerel dosya sisteminde arayacagini belirtir.
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configurations
+          # "native" profilinde kullanilacak yapilandirma dosyalarinin bulunduğu yolu belirtir.
+          # "classpath:/configurations", yapilandirma dosyalarinin uygulamanizin classpath'indeki "configurations" klasorunde bulunacagini belirtir.
+
+server:
+  port: 8888
+  # Uygulamanizin HTTP isteklerini dinleyecegi portu belirtir. Burada "8888" olarak ayarlanmis, bu da uygulamanizin bu port uzerinden erisilebilir olacagi anlamina gelir.

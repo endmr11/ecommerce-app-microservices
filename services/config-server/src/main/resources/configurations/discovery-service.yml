@@ -1,0 +1,21 @@
+eureka:
+  instance:
+    hostname: localhost
+    # Eureka sunucusunun çalıştığı host adı. Burada "localhost" olarak ayarlanmış.
+  client:
+    registerWithEureka: false
+    # Bu ayar, uygulamanın Eureka sunucusuna kendini kaydedip kaydetmeyeceğini belirler.
+    # Burada "false" olarak ayarlanmış, bu da uygulamanın kendini Eureka sunucusuna kaydettirmeyeceği anlamına gelir.
+    fetchRegistry: false
+    # Bu ayar, uygulamanın Eureka sunucusundan kayıtlı servislerin bilgilerini alıp almayacağını belirler.
+    # Burada "false" olarak ayarlanmış, bu da uygulamanın Eureka'dan servis bilgilerini almayacağı anlamına gelir.
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      # Eureka sunucusuna bağlanılacak URL. ${eureka.instance.hostname} ve ${server.port} yer tutucularının
+      # yerini gerçek değerlerle doldurur. Burada "localhost:8761" olarak ayarlanmış.
+      # Bu URL, Eureka sunucusunun yerini belirtir ve `defaultZone` altında tanımlanmıştır.
+
+server:
+  port: 8761
+  # Uygulamanın dinleyeceği port numarasıdır. Burada "8761" olarak ayarlanmış.
+  # Bu genellikle Eureka sunucusu için varsayılan port numarasıdır.

@@ -1,0 +1,22 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/micro-services
+          # JWT (JSON Web Token) ile OAuth2 kaynak sunucusu yapılandırması.
+          # `issuer-uri`: JWT token'larının üretildiği ve imzalandığı yetkili sunucunun URI'si.
+          # Burada `http://localhost:8181/realms/micro-services` adresi, token'ların
+          # üretildiği ve doğrulandığı sunucunun adresidir.
+
+  config:
+    import: optional:configserver:http://localhost:8888
+    # Config Server'dan yapılandırma bilgilerini almak için kullanılan ayar.
+    # `optional:` ifadesi, Config Server'a bağlanmanın isteğe bağlı olduğunu belirtir.
+    # `http://localhost:8888` adresi, yapılandırma bilgilerini sağlayan sunucunun adresidir.
+
+  application:
+    name: gateway-service
+    # Uygulama adını belirtir.
+    # `gateway-service`, Spring Boot uygulamanızın adıdır ve mikro hizmetler arasında
+    # tanımlama ve izleme için kullanılır.

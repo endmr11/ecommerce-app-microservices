@@ -1,0 +1,9 @@
+# Spring Cloud Config Server'dan yapılandırma alınacak URL
+spring:
+  config:
+    # Yapılandırma sunucusunun URL'si ile `product-service` uygulamasının konfigürasyonlarını alır
+    import: optional:configserver:http://localhost:8888
+
+  application:
+    # Bu uygulamanın adını 'product-service' olarak ayarlar
+    name: product-service

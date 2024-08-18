@@ -1,0 +1,29 @@
+spring:
+  data:
+    mongodb:
+      username: eren
+      password: eren
+      additional-hosts: localhost
+      port: 27017
+      database: customer
+      authentication-database: admin
+      # MongoDB yapılandırma ayarları:
+      # - username: MongoDB veritabanına bağlanmak için kullanılacak kullanıcı adı.
+      # - password: Bu kullanıcı adı için belirlenen şifre.
+      # - additional-hosts: MongoDB sunucusunun çalıştığı host. Burada "localhost" olarak belirtilmiş.
+      # - port: MongoDB sunucusunun dinlediği port numarası. Genellikle varsayılan port 27017'dir.
+      # - database: Uygulamanın bağlanacağı veritabanı adı. Burada "customer" olarak ayarlanmış.
+      # - authentication-database: Kullanıcı kimlik doğrulaması için kullanılan veritabanı. Burada "admin" olarak belirtilmiş.
+
+# Swagger UI'nin URL yolu. API dokumantasyonunu goruntulemek icin kullanilacak.
+# OpenAPI dokumanlarinin bulundugu yol. Swagger UI bu dokümanlari kullanarak arayüz olusturur.
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    api-docs.path: /api-docs
+
+
+
+server:
+  port: 8090
+  # Sunucunun dinleyeceği port numarası. Burada "8090" olarak belirlenmiş, bu da uygulamanın bu port üzerinde çalışacağını gösterir.

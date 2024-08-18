@@ -1,0 +1,23 @@
+eureka:
+  instance:
+    hostname: localhost
+    # Eureka server'ında bu mikro servisin tanımlanırken kullanacağı hostname ayarı. "localhost" olarak belirlenmiş, bu da bu servisin kendi makinasi üzerinde çalışacağını belirtir.
+
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      # Eureka server'a bu servisin kaydolacağı URL. "http://localhost:8761/eureka/" bu servisin Eureka server'a kaydolması için kullanacağı adresi belirtir. Genellikle Eureka server kendi portunda (8761) çalışır.
+
+spring:
+  cloud:
+    config:
+      override-system-properties: false
+      # Spring Cloud Config Server'ın sistem özelliklerini yapılandırmalarla geçersiz kılmasını engeller.
+      # "false" olarak ayarlanmış, bu da sistem özelliklerinin (JVM veya işletim sistemi tarafından ayarlanan) yapılandırma dosyalarında belirtilenlerle değiştirilmemesi anlamına gelir.
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+      # Tracing yönetim ayarları için örnekleme olasılığı. Burada 1.0 olarak ayarlanmış, yani tüm istekler izlenir (0.0: hiçbiri, 1.0: hepsi).
+      # Bu, uygulamanın tüm izleme verilerini toplayacak ve analize gönderecek şekilde yapılandırıldığını belirtir.

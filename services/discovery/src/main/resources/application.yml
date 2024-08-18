@@ -1,0 +1,12 @@
+# Uygulamanin adini tanimlar. Bu, genellikle uygulamanin kimligini belirtmek için kullanilir.
+spring:
+  application:
+    name: discovery-service
+    # `discovery-service`, Spring Boot uygulamanizin adidir ve mikro hizmetler arasında
+    # tanimlama ve izleme için kullanilir.
+
+  # Yapilandirma dosyalarini bir config server'dan almak icin yapilandirma yapar.
+  # "optional:configserver:http://localhost:8888" ifadesi, yapilandirma dosyalarinin istege bagli olarak
+  # "http://localhost:8888" adresindeki config server'dan alinacagini belirtir.
+  config:
+    import: optional:configserver:http://localhost:8888

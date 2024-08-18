@@ -1,0 +1,53 @@
+server:
+  port: 8060
+  # Uygulamanın dinleyeceği port numarasını belirtir. Burada `8060` olarak ayarlanmış.
+  # Bu port, uygulamanın HTTP isteklerini dinleyeceği port olacaktır.
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/payment
+    username: eren
+    password: eren
+    # PostgreSQL veritabanı bağlantı ayarlarını içerir:
+    # - `driver-class-name`: PostgreSQL JDBC sürücüsünün sınıf adı.
+    # - `url`: PostgreSQL veritabanı bağlantı URL'si. `localhost` üzerinde `5432` portunda çalışan `payment` veritabanına bağlanır.
+    # - `username`: PostgreSQL veritabanına bağlanırken kullanılacak kullanıcı adı.
+    # - `password`: Kullanıcı adı için şifre.
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      # Hibernate için veritabanı şeması ayarlarını içerir:
+      # - `ddl-auto`: Veritabanı şemasının nasıl yönetileceğini belirler. `create` seçeneği, uygulama başlatıldığında mevcut şemayı siler ve yeniden oluşturur.
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # JPA ayarlarını içerir:
+    # - `database`: Kullanılan veritabanı türü. Burada `postgresql` olarak ayarlanmış.
+    # - `database-platform`: Hibernate'in veritabanı için kullanacağı SQL dilinin özelliklerini belirten sınıf adı. PostgreSQL için `PostgreSQLDialect` kullanılmış.
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentConfirmation:com.eren.ecommerce.notification.PaymentNotificationRequest
+        # Kafka üretici ayarlarını içerir:
+        # - `bootstrap-servers`: Kafka broker'larının adresleri. Burada `localhost:9092` kullanılmış.
+        # - `key-serializer`: Kafka'ya gönderilen anahtarların nasıl serileştirileceğini belirler. Burada `StringSerializer` kullanılmış.
+        # - `value-serializer`: Kafka'ya gönderilen değerlerin nasıl serileştirileceğini belirler. Burada `JsonSerializer` kullanılmış.
+        # - `properties`: JSON serileştirme ayarları içerir:
+        #   - `spring.json.type.mapping`: JSON türlerinin Java sınıflarına eşlenmesi. `paymentConfirmation` türü `com.eren.ecommerce.notification.PaymentNotificationRequest` Java sınıfına eşlenmiş.
+# Swagger UI'nin URL yolu. API dokumantasyonunu goruntulemek icin kullanilacak.
+# OpenAPI dokumanlarinin bulundugu yol. Swagger UI bu dokümanlari kullanarak arayüz olusturur.
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    api-docs.path: /api-docs
+    
+application:
+  config:
+    product-url: http://localhost:8222/api/v1/products
+    # Uygulama özel yapılandırma ayarlarını içerir:
+    # - `product-url`: Ürün hizmetleri API'sinin URL'si.

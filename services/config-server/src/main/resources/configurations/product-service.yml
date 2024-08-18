@@ -1,0 +1,49 @@
+server:
+  port: 8050
+  # Uygulamanın dinleyeceği port numarasını belirtir. Burada `8050` olarak ayarlanmış.
+  # Bu port, uygulamanın HTTP isteklerini dinleyeceği port olacaktır.
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/product
+    username: eren
+    password: eren
+    # PostgreSQL veritabanı bağlantı ayarlarını içerir:
+    # - `driver-class-name`: PostgreSQL JDBC sürücüsünün sınıf adı.
+    # - `url`: PostgreSQL veritabanı bağlantı URL'si. `localhost` üzerinde `5432` portunda çalışan `product` veritabanına bağlanır.
+    # - `username`: PostgreSQL veritabanına bağlanırken kullanılacak kullanıcı adı.
+    # - `password`: Kullanıcı adı için şifre.
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      # Hibernate için veritabanı şeması ayarlarını içerir:
+      # - `ddl-auto`: Veritabanı şemasının nasıl yönetileceğini belirler. `validate` seçeneği, şemanın mevcut durumunu kontrol eder ve uyumsuzlukları bildirir, ancak şemayı değiştirmez.
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # JPA ayarlarını içerir:
+    # - `database`: Kullanılan veritabanı türü. Burada `postgresql` olarak ayarlanmış.
+    # - `database-platform`: Hibernate'in veritabanı için kullanacağı SQL dilinin özelliklerini belirten sınıf adı. PostgreSQL için `PostgreSQLDialect` kullanılmış.
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    baseline-description: "init"
+    baseline-version: 0
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    # Flyway ile veritabanı göç (migration) ayarlarını içerir:
+    # - `baseline-on-migrate`: `true` olarak ayarlandığında, Flyway mevcut veritabanı şemasıyla uyumlu olması için bir temel (baseline) sürümü oluşturur ve migrasyon işlemlerine başlamadan önce mevcut durumu bu temel sürüm olarak kabul eder.
+    # - `enabled`: Flyway'ın etkin olup olmadığını belirler. `true` olarak ayarlanmış, bu da Flyway'ın etkin olduğunu gösterir.
+    # - `baseline-description`: Temel sürümün açıklaması.
+    # - `baseline-version`: Temel sürümün numarası. Burada `0` olarak ayarlanmış.
+    # - `user`: Flyway'ın veritabanı ile bağlantı kurarken kullanacağı kullanıcı adı. Spring Data kaynak yapılandırmasından alınmıştır.
+    # - `password`: Flyway'ın veritabanı ile bağlantı kurarken kullanacağı şifre. Spring Data kaynak yapılandırmasından alınmıştır.
+
+# Swagger UI'nin URL yolu. API dokumantasyonunu goruntulemek icin kullanilacak.
+# OpenAPI dokumanlarinin bulundugu yol. Swagger UI bu dokümanlari kullanarak arayüz olusturur.
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    api-docs.path: /api-docs

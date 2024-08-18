@@ -1,0 +1,64 @@
+server:
+  port: 8040
+  # Uygulamanın dinleyeceği port numarasıdır. Burada "8040" olarak ayarlanmış.
+  # Bu port, uygulamanın HTTP isteklerini dinleyeceği port olacaktır.
+
+spring:
+  data:
+    mongodb:
+      username: eren
+      password: eren
+      host: localhost
+      port: 27017
+      database: notification
+      authentication-database: admin
+      # MongoDB veritabanı bağlantı ayarlarıdır:
+      # - `username`: MongoDB'ye bağlanırken kullanılacak kullanıcı adı.
+      # - `password`: Kullanıcı adı için şifre.
+      # - `host`: MongoDB'nin bulunduğu ana makine adı veya IP adresi.
+      # - `port`: MongoDB'nin dinlediği port numarası. Genellikle varsayılan 27017 kullanılır.
+      # - `database`: Kullanılacak MongoDB veritabanı adı.
+      # - `authentication-database`: Kimlik doğrulama için kullanılacak veritabanı adı. Genellikle `admin` olur.
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: paymentGroup,orderGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: orderConfirmation:com.eren.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.eren.ecommerce.kafka.payment.PaymentConfirmation
+        # Kafka tüketici ayarlarıdır:
+        # - `bootstrap-servers`: Kafka broker'larının adresleri. Burada `localhost:9092` kullanılmış.
+        # - `group-id`: Kafka tüketici grubunun kimliği. Birden fazla grup kimliği virgülle ayrılmış.
+        # - `auto-offset-reset`: Kafka'da ofsetlerin nasıl sıfırlanacağı. `earliest` olarak ayarlanmış, bu da ilk baştan başlayacağı anlamına gelir.
+        # - `key-deserializer`: Kafka'dan gelen anahtarların nasıl çözüleceği. Burada `StringDeserializer` kullanılmış.
+        # - `value-deserializer`: Kafka'dan gelen değerlerin nasıl çözüleceği. Burada `JsonDeserializer` kullanılmış ve `spring.json.trusted.packages` ile JSON paketi ayarları yapılmış.
+        # - `properties`: JSON deserializasyonu için ek ayarları içerir:
+        #   - `spring.json.trusted.packages`: Güvenilir JSON paketleri. Burada tüm paketlere izin verilmiş (`'*'`).
+        #   - `spring.json.type.mapping`: JSON türlerinin Java sınıflarına eşlenmesi. `orderConfirmation` ve `paymentConfirmation` JSON türleri belirtilmiş.
+
+  mail:
+    host: localhost
+    port: 1025
+    username: eren
+    password: eren
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+          # Mail sunucusuna güvenilir bağlantı sağlamak için kullanılacak sertifikalar. Burada tüm sertifikalar (`'*'`) güvenilir olarak kabul edilmiş.
+        auth: true
+        # SMTP kimlik doğrulaması etkinleştirilmiş.
+        starttls:
+          enabled: true
+          # STARTTLS şifreleme protokolü etkinleştirilmiş.
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+        # Mail sunucusu ile bağlantı zaman aşımı ayarları:
+        # - `connectiontimeout`: Sunucu ile bağlantı kurma süresi (ms).
+        # - `timeout`: Sunucudan yanıt bekleme süresi (ms).
+        # - `writetimeout`: Sunucuya veri yazma süresi (ms).

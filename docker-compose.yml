@@ -1,0 +1,153 @@
+services: # Her bir servisin yapılandırmasını belirtir
+
+  postgresql: # PostgreSQL veritabanı servisi
+    container_name: ms_pg_sql # Container ismi
+    image: postgres # Kullanılacak PostgreSQL image'i
+    environment: # Çevre değişkenleri
+      POSTGRES_USER: eren # PostgreSQL kullanıcı adı
+      POSTGRES_PASSWORD: eren # PostgreSQL kullanıcı şifresi
+      PGDATA: /data/postgres # PostgreSQL veri dizini
+    volumes: # Verilerin container dışında saklanmasını sağlar
+      - postgres:/data/postgres # PostgreSQL verilerini hosttaki bir dizine bağlar
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - "5432:5432" # PostgreSQL'in çalıştığı port
+    networks: # Servisin dahil olduğu ağ
+      - microservices-net # Mikroservisler arası iletişim için kullanılan ağ
+    restart: unless-stopped # Container yalnızca manuel olarak durdurulmadığı sürece yeniden başlatılır
+
+  pgadmin: # pgAdmin servisi (PostgreSQL yönetim arayüzü)
+    container_name: ms_pgadmin # Container ismi
+    image: dpage/pgadmin4 # Kullanılacak pgAdmin image'i
+    environment: # Çevre değişkenleri
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org} # pgAdmin'e giriş için kullanılacak varsayılan e-posta adresi
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin} # pgAdmin'e giriş için kullanılacak varsayılan şifre
+      PGADMIN_CONFIG_SERVER_MODE: 'False' # Server modunu devre dışı bırakır (tek kullanıcı modunu etkinleştirir)
+    volumes: # Verilerin container dışında saklanmasını sağlar
+      - pgadmin:/var/lib/pgadmin # pgAdmin verilerini hosttaki bir dizine bağlar
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - "5050:80" # pgAdmin'in web arayüzünün çalıştığı port
+    networks: # Servisin dahil olduğu ağ
+      - microservices-net # Mikroservisler arası iletişim için kullanılan ağ
+    restart: unless-stopped # Container yalnızca manuel olarak durdurulmadığı sürece yeniden başlatılır
+
+  zipkin: # Zipkin servisi (Dağıtık izleme için kullanılan araç)
+    container_name: zipkin # Container ismi
+    image: openzipkin/zipkin # Kullanılacak Zipkin image'i
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - "9411:9411" # Zipkin'in çalıştığı port
+    networks: # Servisin dahil olduğu ağ
+      - microservices-net # Mikroservisler arası iletişim için kullanılan ağ
+
+  mongodb: # MongoDB veritabanı servisi
+    image: mongo # Kullanılacak MongoDB image'i
+    container_name: mongo_db # Container ismi
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - 27017:27017 # MongoDB'nin çalıştığı port
+    volumes: # Verilerin container dışında saklanmasını sağlar
+      - mongo:/data # MongoDB verilerini hosttaki bir dizine bağlar
+    environment: # Çevre değişkenleri
+      # MongoDB kök kullanıcı adı
+      - MONGO_INITDB_ROOT_USERNAME=eren
+      # MongoDB kök kullanıcı şifresi
+      - MONGO_INITDB_ROOT_PASSWORD=eren
+
+  mongo-express: # Mongo-Express servisi (MongoDB yönetim arayüzü)
+    image: mongo-express # Kullanılacak Mongo-Express image'i
+    container_name: mongo_express # Container ismi
+    restart: always # Herhangi bir nedenle durursa otomatik olarak yeniden başlatılır
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - 8081:8081 # Mongo-Express'in web arayüzünün çalıştığı port
+    environment: # Çevre değişkenleri
+      # Mongo-Express için MongoDB yönetici kullanıcı adı
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=eren
+      # Mongo-Express için MongoDB yönetici şifresi
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=eren
+      # MongoDB sunucusunun adı
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+
+  zookeeper: # Zookeeper servisi (Kafka için dağıtık koordinasyon servisi)
+    image: confluentinc/cp-zookeeper:latest # Kullanılacak Zookeeper image'i
+    container_name: zookeeper # Container ismi
+    environment: # Çevre değişkenleri
+      ZOOKEEPER_SERVER_ID: 1 # Zookeeper sunucu ID'si
+      ZOOKEEPER_CLIENT_PORT: 2181 # Zookeeper istemci portu
+      ZOOKEEPER_TICK_TIME: 2000 # Zookeeper tick time (zaman aralığı)
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - "22181:2181" # Zookeeper'in çalıştığı port
+    networks: # Servisin dahil olduğu ağ
+      - microservices-net # Mikroservisler arası iletişim için kullanılan ağ
+
+  kafka: # Kafka servisi (Mesajlaşma sistemi)
+    image: confluentinc/cp-kafka:latest # Kullanılacak Kafka image'i
+    container_name: ms_kafka # Container ismi
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - "9092:9092" # Kafka'nın çalıştığı port
+    depends_on: # Kafka'nın Zookeeper'e bağımlı olduğunu belirtir
+      # Zookeeper servisi önce başlatılır
+      - zookeeper
+    environment: # Çevre değişkenleri
+      # Kafka offset topic çoğaltma faktörü
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # Kafka işlem durumu günlüğü çoğaltma faktörü
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      # Kafka işlem durumu minimum ISR
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      # Kafka'nın Zookeeper'e bağlanacağı adres
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # Güvenlik protokolü haritası
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      # Kafka'nın advertised listener'ı
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+    networks: # Servisin dahil olduğu ağ
+      # Mikroservisler arası iletişim için kullanılan ağ
+      - microservices-net
+
+  mail-dev: # MailDev servisi (E-posta testi için kullanılan araç)
+    container_name: ms-mail-dev # Container ismi
+    image: maildev/maildev # Kullanılacak MailDev image'i
+    ports: # Host makinesi ile container arasındaki bağlantı noktalarını eşler
+      - 1080:1080 # MailDev web arayüzünün çalıştığı port
+      - 1025:1025 # MailDev SMTP sunucusunun çalıştığı port
+
+
+  keycloak-mysql: # MySQL hizmeti için tanımlanan servis adı.
+    container_name: keycloak-mysql # Konteynerin adını belirler. Bu ad, Docker'ın konteyneri tanımlamasında kullanılır.
+    image: mysql:8 # Kullanılacak MySQL Docker imajı. Burada `mysql:8` imajı belirtilmiş.
+    volumes:
+      - ./volume-data/mysql_keycloak_data:/var/lib/mysql # MySQL veritabanı verilerini kalıcı hale getirmek için bağlanan yerel dizin. MySQL konteynerinin veri dizinini yerel bir dizinle eşler.
+    environment:
+      MYSQL_ROOT_PASSWORD: root # MySQL root kullanıcısı için şifre.
+      MYSQL_DATABASE: keycloak # Oluşturulacak varsayılan veritabanı adı.
+      MYSQL_USER: keycloak # MySQL'de oluşturulacak kullanıcı adı.
+      MYSQL_PASSWORD: password # `keycloak` kullanıcısı için şifre.
+
+  keycloak: # Keycloak hizmeti için tanımlanan servis adı.
+    container_name: keycloak # Konteynerin adını belirler.
+    image: quay.io/keycloak/keycloak:24.0.1 # Kullanılacak Keycloak Docker imajı. Burada `quay.io/keycloak/keycloak:24.0.1` imajı belirtilmiş.
+    command: [ "start-dev", "--import-realm" ] # Keycloak'ın başlatma komutları. `start-dev` geliştirme modunda başlatır ve `--import-realm` mevcut realm'leri içe aktarır.
+    environment:
+      DB_VENDOR: MYSQL # Keycloak'ın kullanacağı veritabanı türü. Burada MySQL kullanılıyor.
+      DB_ADDR: mysql # Veritabanı sunucusunun adresi. Burada Docker Compose'daki servisin adı kullanılır.
+      DB_DATABASE: keycloak # Kullanılacak veritabanı adı. `keycloak-mysql` servisiyle aynı veritabanı adı.
+      DB_USER: keycloak # Veritabanı kullanıcı adı. `keycloak-mysql` servisi ile aynı kullanıcı adı.
+      DB_PASSWORD: password # Veritabanı şifresi. `keycloak-mysql` servisi ile aynı şifre.
+      KEYCLOAK_ADMIN: admin # Keycloak yönetici kullanıcısı adı.
+      KEYCLOAK_ADMIN_PASSWORD: admin # Keycloak yönetici kullanıcısı şifresi.
+    ports:
+      - "8181:8080" # Keycloak'ın dış dünyaya açılan portu. İçerdeki `8080` portunu dışarıdaki `8181` portuna yönlendirir.
+    volumes:
+      - ./docker/keycloak/realms/:/opt/keycloak/data/import/ # Keycloak'ın realm verilerini içe aktaracağı dizin. Yerel dizini Keycloak konteynerindeki import dizini ile eşler.
+    depends_on:
+      - keycloak-mysql # Bu servisin, `keycloak-mysql` servisi başlamadan başlatılmayacağını belirtir. `keycloak-mysql` servisi Keycloak'ın çalışması için gerekli olan MySQL veritabanını sağlar.
+    networks:
+      - microservices-net
+
+
+networks: # Docker ağlarını tanımlar
+  microservices-net: # Mikroservisler arası iletişim için kullanılan özel ağ
+    driver: bridge
+
+volumes: # Docker volümlerini tanımlar
+  postgres: # PostgreSQL verileri için kullanılan volume
+  pgadmin: # pgAdmin verileri için kullanılan volume
+  mongo: # MongoDB verileri için kullanılan volume

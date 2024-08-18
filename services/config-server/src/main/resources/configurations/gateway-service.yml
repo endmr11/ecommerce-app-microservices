@@ -1,0 +1,60 @@
+server:
+  port: 8222
+  # Uygulamanın dinleyeceği port numarasıdır. Burada "8222" olarak ayarlanmış.
+  # Bu port, uygulamanın HTTP isteklerini dinleyeceği port olacaktır.
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          # Bu ayar, Spring Cloud Gateway'in servisleri otomatik olarak keşfetmesini sağlar.
+          # `enabled: true` olarak ayarlanmış, bu da hizmetlerin dinamik olarak keşfedileceği anlamına gelir.
+      routes:
+        - id: customer-service
+          uri: lb:http://CUSTOMER-SERVICE
+          # `lb:` (load balanced) öneki, bu rota için yük dengeleme özelliğinin etkin olduğunu belirtir.
+          # `uri`, rotanın yönlendirilmesi gereken servis URL'sidir. Burada `CUSTOMER-SERVICE` adında bir servis kullanılmış.
+          predicates:
+            - Path=/api/v1/customers/**
+            # Bu predicateler, rotanın hangi istekleri kabul edeceğini belirtir.
+            # Burada `/api/v1/customers/**` yolu bu rotaya yönlendirilir.
+
+        - id: order-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+            # `/api/v1/orders/**` yolu bu rotaya yönlendirilir.
+
+        - id: order-lines-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/order-lines/**
+            # `/api/v1/order-lines/**` yolu bu rotaya yönlendirilir.
+
+        - id: product-service
+          uri: lb:http://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+            # `/api/v1/products/**` yolu bu rotaya yönlendirilir.
+
+        - id: payment-service
+          uri: lb:http://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+            # `/api/v1/payments/**` yolu bu rotaya yönlendirilir.
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    # `org.springframework.cloud.gateway` için log seviyesini DEBUG olarak ayarlar.
+    # Bu, Spring Cloud Gateway ile ilgili daha ayrıntılı loglar üretir.
+
+    org.springframework.web.reactive.function.client: DEBUG
+    # `org.springframework.web.reactive.function.client` için log seviyesini DEBUG olarak ayarlar.
+    # Bu, reaktif web fonksiyonlarıyla ilgili daha ayrıntılı loglar üretir.
+
+    org.springframework.web.reactive.function.server: DEBUG
+    # `org.springframework.web.reactive.function.server` için log seviyesini DEBUG olarak ayarlar.
+    # Bu, reaktif web sunucusu fonksiyonlarıyla ilgili daha ayrıntılı loglar üretir.
