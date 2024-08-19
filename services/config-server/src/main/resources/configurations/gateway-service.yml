@@ -20,30 +20,55 @@ spring:
             - Path=/api/v1/customers/**
             # Bu predicateler, rotanın hangi istekleri kabul edeceğini belirtir.
             # Burada `/api/v1/customers/**` yolu bu rotaya yönlendirilir.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: customerServiceCircuitBreaker
+                fallbackUri: forward:/fallback/customers
 
         - id: order-service
           uri: lb:http://ORDER-SERVICE
           predicates:
             - Path=/api/v1/orders/**
             # `/api/v1/orders/**` yolu bu rotaya yönlendirilir.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderServiceCircuitBreaker
+                fallbackUri: forward:/fallback/orders
 
         - id: order-lines-service
           uri: lb:http://ORDER-SERVICE
           predicates:
             - Path=/api/v1/order-lines/**
             # `/api/v1/order-lines/**` yolu bu rotaya yönlendirilir.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderServiceCircuitBreaker
+                fallbackUri: forward:/fallback/order-lines
 
         - id: product-service
           uri: lb:http://PRODUCT-SERVICE
           predicates:
             - Path=/api/v1/products/**
             # `/api/v1/products/**` yolu bu rotaya yönlendirilir.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: productServiceCircuitBreaker
+                fallbackUri: forward:/fallback/products
 
         - id: payment-service
           uri: lb:http://PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
             # `/api/v1/payments/**` yolu bu rotaya yönlendirilir.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: paymentServiceCircuitBreaker
+                fallbackUri: forward:/fallback/payments
 
 logging:
   level:
@@ -58,3 +83,59 @@ logging:
     org.springframework.web.reactive.function.server: DEBUG
     # `org.springframework.web.reactive.function.server` için log seviyesini DEBUG olarak ayarlar.
     # Bu, reaktif web sunucusu fonksiyonlarıyla ilgili daha ayrıntılı loglar üretir.
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  observations:
+    key-values:
+      application: api-gateway
+  tracing:
+    sampling:
+      probability: 1.0
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+    instances:
+      customerServiceCircuitBreaker:
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      orderServiceCircuitBreaker:
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      productServiceCircuitBreaker:
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      paymentServiceCircuitBreaker:
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
