@@ -1,0 +1,1033 @@
+{
+	"info": {
+		"_postman_id": "f357e192-82ae-4500-8c8e-30dc6c65d782",
+		"name": "ecommerce",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17366316",
+		"_collection_link": "https://interstellar-astronaut-852624.postman.co/workspace/Team-Workspace~f2bec733-9bea-43b0-8120-843a59e41cc3/collection/17366316-f357e192-82ae-4500-8c8e-30dc6c65d782?action=share&source=collection_link&creator=17366316"
+	},
+	"item": [
+		{
+			"name": "customer-service",
+			"item": [
+				{
+					"name": "createCustomer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Eren\",\n    \"lastName\": \"Demir\",\n    \"email\":\"eren@gmail.com\",\n    \"address\":{\n        \"street\":\"sokak\",\n        \"houseNumber\": \"1\",\n        \"zipCode\":\"2\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8090/api/v1/customer",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCustomer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \"id\":\"66c0cc533c0abe26baddda22\",\n    \"firstName\": \"Eren\",\n    \"lastName\": \"Demir\",\n    \"email\":\"eren@gmail.com\",\n    \"address\":{\n        \"street\":\"sokak2\",\n        \"houseNumber\": \"1\",\n        \"zipCode\":\"2\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8090/api/v1/customer",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllCustomers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8090/api/v1/customers",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "existsByIdCustomer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8090/api/v1/customer/exists/66c0cc533c0abe26baddda22",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								"exists",
+								"66c0cc533c0abe26baddda22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findOneCustomer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8090/api/v1/customer/66c0cc533c0abe26baddda22",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								"66c0cc533c0abe26baddda22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCustomer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8090/api/v1/customer/66c0cc533c0abe26baddda22",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								"66c0cc533c0abe26baddda22"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product-service",
+			"item": [
+				{
+					"name": "createProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ürün adı\",\n    \"description\": \"Ürün açıklaması\",\n    \"availableQuantity\":1.0,\n    \"price\": 1,\n    \"categoryId\":1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8050/api/v1/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8050",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"productId\": 1202,\n        \"quantity\": 1\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8050/api/v1/products/purchase",
+							"host": [
+								"localhost"
+							],
+							"port": "8050",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8050/api/v1/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8050",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findOneProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8050/api/v1/products/1202",
+							"host": [
+								"localhost"
+							],
+							"port": "8050",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1202"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order-service",
+			"item": [
+				{
+					"name": "createOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":1,\n    \"reference\":\"\",\n    \"amount\":1,\n    \"paymentMethod\":\"PAYPAL\",\n    \"customerId\":\"\",\n    \"products\":[\n        {\n            \"productId\":1,\n            \"quantity\":1.0\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8070/api/v1/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8070",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllOrders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8070/api/v1/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8070",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findOneOrder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8070/api/v1/orders/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8070",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllByOrderId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8070/api/v1/order-lines/order/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8070",
+							"path": [
+								"api",
+								"v1",
+								"order-lines",
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment-service",
+			"item": [
+				{
+					"name": "createPayment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":1,\n    \"amount\":1,\n    \"paymentMethod\":\"PAYPAL\",\n    \"orderId\":1,\n    \"orderReference\":\"PAYPAL\",\n    \"Customer\":[\n        {\n            \"id\":\"\",\n            \"firstName\":\"\",\n            \"lastName\":\"\",\n            \"email\":\"\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8060/api/v1/payments",
+							"host": [
+								"localhost"
+							],
+							"port": "8060",
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "gateway-service",
+			"item": [
+				{
+					"name": "order-service Copy",
+					"item": [
+						{
+							"name": "createOrder",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reference\":\"MS-20241205\",\n    \"amount\":900,\n    \"paymentMethod\":\"PAYPAL\",\n    \"customerId\":\"66c0cdb33c0abe26baddda23\",\n    \"products\":[\n        {\n            \"productId\":1,\n            \"quantity\":1\n        },\n        {\n            \"productId\":251,\n            \"quantity\":1\n        },\n        {\n\n            \"productId\":851,\n            \"quantity\":1\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/orders",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAllOrders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/orders",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findOneOrder",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/orders/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAllByOrderId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/order-lines/order/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"order-lines",
+										"order",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "payment-service Copy",
+					"item": [
+						{
+							"name": "createPayment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":1,\n    \"amount\":1,\n    \"paymentMethod\":\"PAYPAL\",\n    \"orderId\":1,\n    \"orderReference\":\"PAYPAL\",\n    \"Customer\":[\n        {\n            \"id\":\"\",\n            \"firstName\":\"\",\n            \"lastName\":\"\",\n            \"email\":\"\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/payments",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"payments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product-service Copy",
+					"item": [
+						{
+							"name": "createProduct",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Ürün adı\",\n    \"description\": \"Ürün açıklaması\",\n    \"availableQuantity\":1.0,\n    \"price\": 1,\n    \"categoryId\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/products",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "purchase",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"productId\": 1202,\n        \"quantity\": 1\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/products/purchase",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"purchase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAllProducts",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8181/realms/micro-services/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "vj7LADZfKMHwYsCZkHMpoTPYhpkgs00y",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "micro-services-api",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "Token",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/products",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findOneProduct",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/products/1202",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"1202"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "customer-service Copy",
+					"item": [
+						{
+							"name": "createCustomer",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8181/realms/micro-services/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "vj7LADZfKMHwYsCZkHMpoTPYhpkgs00y",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "micro-services-api",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "Token",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Eren\",\n    \"lastName\": \"Demir\",\n    \"email\":\"eren@gmail.com\",\n    \"address\":{\n        \"street\":\"sokak\",\n        \"houseNumber\": \"1\",\n        \"zipCode\":\"2\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/customers",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCustomer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \"id\":\"66c0cc533c0abe26baddda22\",\n    \"firstName\": \"Eren\",\n    \"lastName\": \"Demir\",\n    \"email\":\"eren@gmail.com\",\n    \"address\":{\n        \"street\":\"sokak2\",\n        \"houseNumber\": \"1\",\n        \"zipCode\":\"2\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8222/api/v1/customers",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAllCustomers",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8181/realms/micro-services/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "vj7LADZfKMHwYsCZkHMpoTPYhpkgs00y",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "micro-services-api",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "Token",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/customers",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "existsByIdCustomer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/customer/exists/66c0cc533c0abe26baddda22",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"exists",
+										"66c0cc533c0abe26baddda22"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findOneCustomer",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8181/realms/micro-services/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "clientSecret",
+											"value": "vj7LADZfKMHwYsCZkHMpoTPYhpkgs00y",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "micro-services-api",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "Token",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/customers/66c0cc533c0abe26baddda22",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customers",
+										"66c0cc533c0abe26baddda22"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCustomer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8222/api/v1/customers/66c0cc533c0abe26baddda22",
+									"host": [
+										"localhost"
+									],
+									"port": "8222",
+									"path": [
+										"api",
+										"v1",
+										"customers",
+										"66c0cc533c0abe26baddda22"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "health",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessTokenUrl",
+									"value": "http://localhost:8181/realms/micro-services/protocol/openid-connect/token",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "vj7LADZfKMHwYsCZkHMpoTPYhpkgs00y",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "micro-services-api",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "Token",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8222/actuator/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8222",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
