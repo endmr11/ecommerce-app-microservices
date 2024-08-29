@@ -1,5 +1,7 @@
 # Mikroservis Mimari Şeması
 
+## Who made it? It's Eren ;)
+
 ## 1. API Gateway (API GW)
 - **Amaç:** Dış dünyadan gelen tüm istekler API Gateway üzerinden geçer. Bu, bir giriş noktası sağlar ve tüm mikroservislerin direkt olarak internete açılmasına gerek kalmaz.
 - **Kullanım:** Gelen istekleri alır, doğru mikroservise yönlendirir. Örneğin, `/customers` isteği Customer servisine, `/products` isteği Product servisine, `/orders` isteği Order servisine yönlendirilir.
