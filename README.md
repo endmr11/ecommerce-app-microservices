@@ -1,102 +1,101 @@
-# Mikroservis Mimari Şeması
-
-## Who made it? It's Eren ;)
+# Microservice Architecture Diagram
 
 ## 1. API Gateway (API GW)
-- **Amaç:** Dış dünyadan gelen tüm istekler API Gateway üzerinden geçer. Bu, bir giriş noktası sağlar ve tüm mikroservislerin direkt olarak internete açılmasına gerek kalmaz.
-- **Kullanım:** Gelen istekleri alır, doğru mikroservise yönlendirir. Örneğin, `/customers` isteği Customer servisine, `/products` isteği Product servisine, `/orders` isteği Order servisine yönlendirilir.
+- **Purpose:** All requests from the outside world pass through the API Gateway. This provides a single entry point and eliminates the need for each microservice to be exposed directly to the internet.
+- **Usage:** It receives incoming requests and routes them to the correct microservice. For example, a `/customers` request is routed to the Customer service, `/products` to the Product service, and `/orders` to the Order service.
 
-## 2. Customer Servisi
-- **Amaç:** Müşteri bilgilerini yönetir.
-- **Kullanım:** Müşteri verilerini bir MongoDB veritabanında saklar. Müşteri kaydı oluşturma, güncelleme gibi işlemler bu servis üzerinden gerçekleştirilir.
+## 2. Customer Service
+- **Purpose:** Manages customer information.
+- **Usage:** Stores customer data in a MongoDB database. Operations such as creating and updating customer records are handled by this service.
 
-## 3. Product Servisi
-- **Amaç:** Ürün bilgilerini yönetir.
-- **Kullanım:** Ürün verilerini bir MongoDB veritabanında saklar. Ürün ekleme, güncelleme ve listeleme gibi işlemler bu servis aracılığıyla yapılır.
+## 3. Product Service
+- **Purpose:** Manages product information.
+- **Usage:** Stores product data in a MongoDB database. Operations like adding, updating, and listing products are performed through this service.
 
-## 4. Order Servisi
-- **Amaç:** Sipariş işlemlerini yönetir.
-- **Kullanım:** Sipariş oluşturma ve sipariş bilgilerini saklama işlevini yerine getirir. Bir sipariş oluşturulduğunda, ürün bilgilerini Product servisinden, müşteri bilgilerini ise Customer servisinden alır.
+## 4. Order Service
+- **Purpose:** Manages order processes.
+- **Usage:** Handles order creation and stores order data. When an order is created, it fetches product information from the Product service and customer information from the Customer service.
 
-## 5. Payment Servisi
-- **Amaç:** Ödeme işlemlerini yönetir.
-- **Kullanım:** Bir sipariş oluşturulduğunda, ödeme işlemini gerçekleştirir ve ödemeyi onaylar. Ödeme onay bilgilerini Kafka aracılığıyla Notification servisine gönderir.
+## 5. Payment Service
+- **Purpose:** Manages payment transactions.
+- **Usage:** When an order is placed, this service processes the payment and confirms it. It then sends payment confirmation messages to the Notification service via Kafka.
 
-## 6. Notification Servisi
-- **Amaç:** Bildirim göndermek.
-- **Kullanım:** Payment ve Order servislerinden gelen asenkron mesajları dinler ve müşteriye sipariş durumu hakkında e-posta gibi bildirimler gönderir.
+## 6. Notification Service
+- **Purpose:** Sends notifications.
+- **Usage:** Listens to asynchronous messages from the Payment and Order services and sends notifications (such as emails) to the customer about the order status.
 
 ## 7. Kafka (Message Broker)
-- **Amaç:** Mikroservisler arasındaki asenkron iletişimi sağlamak.
-- **Kullanım:** Payment ve Order servislerinden gelen onay mesajlarını Notification servisine iletir. Bu sayede servisler birbirinden bağımsız çalışabilir ve aralarında sıkı bir bağ olmaz.
+- **Purpose:** Enables asynchronous communication between microservices.
+- **Usage:** Delivers confirmation messages from the Payment and Order services to the Notification service. This allows services to operate independently without tight coupling.
 
 ## 8. Zipkin (Distributed Tracing)
-- **Amaç:** Dağıtık izleme ve performans takibi.
-- **Kullanım:** Servisler arasındaki isteklerin izlenmesi ve performans ölçümlerinin yapılmasını sağlar. Hangi servislerin ne kadar sürede yanıt verdiğini analiz etmek için kullanılır.
+- **Purpose:** Distributed tracing and performance monitoring.
+- **Usage:** Tracks requests across services and helps analyze their performance. It shows which services respond and how long they take.
 
 ## 9. Eureka Server
-- **Amaç:** Servis keşfi ve yönetimi.
-- **Kullanım:** Mikroservislerin nerede ve hangi IP adresinde çalıştığını bulmak için kullanılır. Her mikroservis bu sunucuya kendisini kaydeder ve diğer servisler bu sunucu üzerinden birbirlerine ulaşabilir.
+- **Purpose:** Service discovery and registration.
+- **Usage:** Helps identify where each microservice is running. Each microservice registers itself with this server, and others use it to locate services.
 
 ## 10. Config Server
-- **Amaç:** Merkezi yapılandırma yönetimi.
-- **Kullanım:** Tüm mikroservislerin yapılandırma dosyalarını merkezi bir yerden yönetmek için kullanılır. Örneğin, bir veritabanı bağlantı adresi değiştiğinde, tüm servislerde bu değişikliğin tek bir yerden yapılması sağlanır.
+- **Purpose:** Centralized configuration management.
+- **Usage:** Manages configuration files for all microservices from a central location. For example, when a database URL changes, it can be updated in one place.
 
 ## 11. MongoDB
-- **Amaç:** Veritabanı olarak hizmet etmek.
-- **Kullanım:** Customer, Product, Order ve Notification servislerinin veri saklamak için kullandığı NoSQL veritabanıdır.
+- **Purpose:** Acts as the database.
+- **Usage:** A NoSQL database used by the Customer, Product, Order, and Notification services to store their data.
 
 ## 12. Docker
-- **Amaç:** Uygulamaların konteynerize edilmesi.
-- **Kullanım:** Mikroservislerin farklı ortamlarda aynı şekilde çalışmasını sağlamak için kullanılır. Örneğin, her servis Docker konteynerleri içinde çalıştırılabilir.
+- **Purpose:** Containerization of applications.
+- **Usage:** Ensures microservices run the same way across different environments. Each service can be run inside a Docker container.
 
+---
 
-# E-Ticaret Sitesi Alışveriş Süreci
+# E-Commerce Site Shopping Process
 
-## 1. Müşteri Kaydı (Customer Registration)
-**Senaryo:** Joe adında bir kullanıcı e-ticaret sitesine üye olmaya karar verir.
+## 1. Customer Registration
+**Scenario:** A user named Joe decides to sign up on the e-commerce website.
 
-### Adımlar:
-1. Joe, adını, soyadını ve e-posta adresini girerek siteye kaydolur.
-2. Veritabanında `Customer` tablosuna yeni bir kayıt eklenir. Joe’in kullanıcı bilgileri (ad, soyad, e-posta) bu tabloya kaydedilir.
-3. Joe, aynı zamanda adres bilgilerini de sisteme girer (örneğin: `street: "Atatürk Cad."`, `houseNumber: "10"`, `zipCode: "34560"`).
-4. Bu adres bilgisi `Address` tablosunda saklanır ve `Customer` tablosuyla ilişkilendirilir.
+### Steps:
+1. Joe enters his name, surname, and email to register on the site.
+2. A new record is added to the `Customer` table with Joe’s information.
+3. Joe also enters his address (e.g., `street: "Atatürk Cad."`, `houseNumber: "10"`, `zipCode: "34560"`).
+4. The address is stored in the `Address` table and linked to the `Customer` table.
 
-## 2. Ürün Arama ve Seçimi (Product Search and Selection)
-**Senaryo:** Joe, sitede gezerek ilgilendiği ürünleri arar ve sepete ekler.
+## 2. Product Search and Selection
+**Scenario:** Joe browses products and adds the ones he’s interested in to his cart.
 
-### Adımlar:
-1. Joe, çeşitli kategorilere göz atar. Örneğin, `Category` tablosundan “Elektronik” kategorisini seçer.
-2. Bu kategoriye ait ürünler `Product` tablosundan getirilir (örneğin: “Laptop”, “Cep Telefonu”).
-3. Joe, bir laptopu sepetine ekler. Bu ürünün adı, açıklaması, fiyatı ve mevcut miktarı `Product` tablosunda bulunur.
+### Steps:
+1. Joe browses various categories, e.g., selects the “Electronics” category from the `Category` table.
+2. Products in that category are fetched from the `Product` table (e.g., “Laptop”, “Smartphone”).
+3. Joe adds a laptop to his cart. Product details like name, description, price, and available quantity come from the `Product` table.
 
-## 3. Sipariş Verme (Placing an Order)
-**Senaryo:** Joe, sepetindeki ürünleri satın almaya karar verir ve siparişini tamamlar.
+## 3. Placing an Order
+**Scenario:** Joe decides to buy the products in his cart.
 
-### Adımlar:
-1. Joe, ödeme adımına geçer. Sipariş oluşturulur ve bu siparişin detayları `Order` tablosunda saklanır (örneğin: `orderDate`, `reference`).
-2. Sipariş içerisindeki her ürün için `OrderLine` tablosuna bir kayıt eklenir (örneğin: `id: 1`, `quantity: 1`).
-3. Bu siparişin `OrderLine` tabloları ile olan ilişkisi, Joe’in hangi üründen kaç adet sipariş verdiğini gösterir.
+### Steps:
+1. Joe proceeds to checkout. An order is created and stored in the `Order` table (e.g., `orderDate`, `reference`).
+2. Each product in the order is recorded in the `OrderLine` table (e.g., `id: 1`, `quantity: 1`).
+3. The relationship between the order and its order lines shows how many of each product Joe ordered.
 
-## 4. Ödeme İşlemi (Payment Processing)
-**Senaryo:** Joe, siparişinin ödemesini yapmak için kredi kartı bilgilerini girer.
+## 4. Payment Processing
+**Scenario:** Joe enters his credit card details to pay for the order.
 
-### Adımlar:
-1. Joe, kredi kartı bilgilerini girip ödemeyi tamamladığında, ödeme bilgileri `Payment` tablosunda saklanır (örneğin: `reference`, `amount`, `status`).
-2. Bu `Payment` kaydı, ilgili `Order` kaydıyla ilişkilendirilir. Bu, Joe’in siparişine ait ödeme bilgilerini gösterir.
+### Steps:
+1. Once Joe submits his card details, the payment information is saved in the `Payment` table (e.g., `reference`, `amount`, `status`).
+2. This payment is linked to the related order record, showing which order the payment belongs to.
 
-## 5. Sipariş Onayı ve Bildirim (Order Confirmation and Notification)
-**Senaryo:** Joe’in siparişi başarıyla tamamlanır ve ona bir bildirim gönderilir.
+## 5. Order Confirmation and Notification
+**Scenario:** Joe’s order is successfully completed and he receives a notification.
 
-### Adımlar:
-1. Sipariş tamamlandığında, sistem otomatik olarak Joe’in e-posta adresine bir bildirim gönderir.
-2. Bu bildirim, `Notification` tablosunda saklanır. Bildirimin içeriği (`content`), gönderen (`sender`), alıcı (`recipient`) ve tarih (`date`) bilgileri bu tabloda yer alır.
-3. Bu bildirim, ilgili sipariş (`Order`) ile ilişkilendirilir.
+### Steps:
+1. When the order is completed, the system automatically sends Joe an email notification.
+2. This notification is stored in the `Notification` table with details like `content`, `sender`, `recipient`, and `date`.
+3. The notification is linked to the relevant order.
 
-## 6. Ürün Teslimatı (Product Delivery)
-**Senaryo:** Joe’in siparişi kargoya verilir ve belirtilen adrese teslim edilir.
+## 6. Product Delivery
+**Scenario:** Joe’s order is shipped and delivered to the provided address.
 
-### Adımlar:
-1. Siparişin durumu güncellenir ve kargo bilgileri eklenir.
-2. Ürünlerin stok miktarları güncellenir (`availableQuantity` azalır).
-3. Joe’e siparişinin teslim edildiğine dair bir bildirim gönderilir ve `Notification` tablosında kayıt altına alınır.
+### Steps:
+1. The order status is updated and shipping information is added.
+2. Product stock quantities are updated (`availableQuantity` is reduced).
+3. Joe is notified that his order has been delivered, and this is recorded in the `Notification` table.
